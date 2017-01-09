@@ -1,0 +1,64 @@
+hash: 4e62bf206bf480081ba4854ecf40e03b54d0e46da5c88f0aa8bc8e9df9e094b5
+updated: 2017-01-09T00:48:15.227582212-02:00
+imports:
+- name: github.com/codegangsta/cli
+  version: 0bdeddeeb0f650497d603c4ad7b20cfe685682f6
+- name: github.com/dgrijalva/jwt-go
+  version: a601269ab70c205d26370c16f7c81e9017c14e04
+- name: github.com/elazarl/go-bindata-assetfs
+  version: 9a6736ed45b44bf3835afeebb3034b57ed329f3e
+- name: github.com/itsjamie/go-bindata-templates
+  version: 65d795d0c74021e19b2ebadf3c83c01a8290a405
+- name: github.com/jteeuwen/go-bindata
+  version: a0ff2567cfb70903282db057e799fd826784d41d
+- name: github.com/labstack/echo
+  version: 8d504c1b699c757b267255c53b3e5219f9974abc
+  subpackages:
+  - middleware
+- name: github.com/labstack/gommon
+  version: c8c07aa087422c146b86d2f79556b450a8e630a1
+  subpackages:
+  - bytes
+  - color
+  - log
+  - random
+- name: github.com/mattn/go-colorable
+  version: d228849504861217f796da67fae4f6e347643f15
+- name: github.com/mattn/go-isatty
+  version: 30a891c33c7cde7b02a981314b4228ec99380cca
+- name: github.com/moul/http2curl
+  version: 4e24498b31dba4683efb9d35c1c8a91e2eda28c8
+- name: github.com/nu7hatch/gouuid
+  version: 179d4d0c4d8d407a32af483c2354df1d2c91e6c3
+- name: github.com/olebedev/config
+  version: afea898d27c7d17376ecc60c7c2e73c76b40060e
+- name: github.com/olebedev/on
+  version: f65b7c9823a4c30797e9ad3c51d559a36ff8d542
+- name: github.com/parnurzeal/gorequest
+  version: bdd24ac7ec2b0b2126f4782dd031644cbea1d223
+- name: github.com/tylerb/graceful
+  version: d37e108c89765a8e307f15b8fb2ecd10575da6bb
+- name: github.com/valyala/fasttemplate
+  version: 3b874956e03f1636d171bda64b130f9135f42cff
+- name: golang.org/x/crypto
+  version: c3b1d0d6d8690eaebe3064711b026770cc37efa3
+  subpackages:
+  - acme
+  - acme/autocert
+- name: golang.org/x/net
+  version: da2b4fa28524a3baf148c1b94df4440267063c88
+  subpackages:
+  - context
+  - context/ctxhttp
+  - publicsuffix
+- name: golang.org/x/sys
+  version: d75a52659825e75fff6158388dddc6a5b04f9ba5
+  subpackages:
+  - unix
+- name: gopkg.in/olebedev/go-duktape-fetch.v2
+  version: a4ba37699f8bae499586df39f367460ab7566f1b
+- name: gopkg.in/olebedev/go-duktape.v2
+  version: c8eb77ef5aa5bff7b04fa1b8e70a5a1e5eb0755a
+- name: gopkg.in/yaml.v2
+  version: a5b47d31c556af34a302ce5d659e6fea44d90de0
+testImports: []

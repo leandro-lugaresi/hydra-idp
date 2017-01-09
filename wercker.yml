@@ -6,10 +6,7 @@ build:
     - script:
         name: install
         code: |
-          go version
-          go get github.com/olebedev/srlt
-          srlt --verbose r
-          ls -la $GOPATH/bin
+          make vendor_install
     - script:
         name: build
         code: |

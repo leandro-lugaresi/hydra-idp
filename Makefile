@@ -14,7 +14,6 @@ APP_NAME      = $(shell pwd | sed 's:.*/::')
 TARGET        = $(BIN)/$(APP_NAME)
 GIT_HASH      = $(shell git rev-parse HEAD)
 LDFLAGS       = -w -X main.commitHash=$(GIT_HASH)
-SRLT         := $(shell command -v srlt 2> /dev/null)
 
 build: $(ON) $(GO_BINDATA) clean $(TARGET)
 
@@ -50,7 +49,7 @@ restart: $(BINDATA) kill $(TARGET)
 	@$(TARGET) run & echo $$! > $(PID)
 
 $(BINDATA):
-	$(GO_BINDATA) $(BINDATA_FLAGS) -o=$@ server/data/...
+	$(GO_BINDATA) $(BINDATA_FLAGS) -o $@ server/data/...
 
 lint:
 	@eslint client || true
@@ -59,8 +58,11 @@ lint:
 install:
 	@npm install
 
-ifdef SRLT
-	@srlt restore
-else
-	$(warning "Skipping installation of Go dependencies: srlt is not installed")
-endif
+vendor_clean:
+	rm -dRf ./vendor
+
+glide_install:
+	go get github.com/Masterminds/glide
+
+vendor_install: glide_install
+	$(GOPATH)/bin/glide install

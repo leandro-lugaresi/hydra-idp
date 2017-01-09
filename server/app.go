@@ -5,14 +5,12 @@ import (
 	"io"
 	"net/http"
 
+	assetfs "github.com/elazarl/go-bindata-assetfs"
 	"github.com/itsjamie/go-bindata-templates"
-	"github.com/nu7hatch/gouuid"
-	"github.com/olebedev/config"
-	"github.com/labstack/echo/engine/standard"
-	"github.com/elazarl/go-bindata-assetfs"
-	"github.com/labstack/echo/engine"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
+	uuid "github.com/nu7hatch/gouuid"
+	"github.com/olebedev/config"
 )
 
 // App struct.
@@ -24,7 +22,6 @@ type App struct {
 	Conf   *config.Config
 	React  *React
 	API    *API
-	Server *standard.Server
 }
 
 // NewApp returns initialized struct
@@ -55,7 +52,7 @@ func NewApp(opts ...AppOptions) *App {
 	e := echo.New()
 
 	// Set up echo
-	e.SetDebug(conf.UBool("debug"))
+	e.Debug = conf.UBool("debug")
 
 	// Regular middlewares
 	e.Use(middleware.Logger())
@@ -66,9 +63,6 @@ func NewApp(opts ...AppOptions) *App {
 		return c.Redirect(http.StatusMovedPermanently, "/static/images/favicon.ico")
 	})
 
-	std := standard.WithConfig(engine.Config{})
-	std.SetHandler(e)
-
 	// Initialize the application
 	app := &App{
 		Conf:   conf,
@@ -77,13 +71,12 @@ func NewApp(opts ...AppOptions) *App {
 		React: NewReact(
 			conf.UString("duktape.path"),
 			conf.UBool("debug"),
-			std,
+			e,
 		),
 	}
 
-
 	// Use precompiled embedded templates
-	app.Engine.SetRenderer(NewTemplate())
+	app.Engine.Renderer = NewTemplate()
 
 	// Map app struct to access from request handlers
 	// and middlewares
@@ -127,10 +120,10 @@ func NewApp(opts ...AppOptions) *App {
 			if err != nil && err.Error() == http.StatusText(http.StatusNotFound) {
 				// check if file exists
 				// omit first `/`
-				if _, err := Asset(c.Request().URI()[1:]); err == nil {
+				if _, err := Asset(c.Request().URL.RequestURI()[1:]); err == nil {
 					fileServerHandler.ServeHTTP(
-						c.Response().(*standard.Response).ResponseWriter,
-						c.Request().(*standard.Request).Request)
+						c.Response().Writer(),
+						c.Request())
 					return nil
 				}
 				// if static file not found handle request via react application
@@ -146,7 +139,7 @@ func NewApp(opts ...AppOptions) *App {
 
 // Run runs the app
 func (app *App) Run() {
-	app.Engine.Run(standard.New(":" + app.Conf.UString("port")))
+	app.Engine.Start(":" + app.Conf.UString("port"))
 }
 
 // Template is custom renderer for Echo, to render html from bindata
@@ -162,7 +155,7 @@ func NewTemplate() *Template {
 }
 
 // Render renders template
-func (t *Template) Render(w io.Writer, name string, data interface{}, c echo.Context ) error {
+func (t *Template) Render(w io.Writer, name string, data interface{}, c echo.Context) error {
 	return t.templates.ExecuteTemplate(w, name, data)
 }
 

@@ -8,11 +8,10 @@ import (
 	"runtime"
 	"time"
 
+	"github.com/labstack/echo"
+	uuid "github.com/nu7hatch/gouuid"
 	"gopkg.in/olebedev/go-duktape-fetch.v2"
 	"gopkg.in/olebedev/go-duktape.v2"
-	"github.com/labstack/echo/engine/standard"
-	"github.com/labstack/echo"
-	"github.com/nu7hatch/gouuid"
 )
 
 // React struct is contains duktape
@@ -65,8 +64,8 @@ func (r *React) Handle(c echo.Context) error {
 	start := time.Now()
 	select {
 	case re := <-vm.Handle(map[string]interface{}{
-		"url":     c.Request().(*standard.Request).URI(),
-		"headers": c.Request().(*standard.Request).Request.Header,
+		"url":     c.Request().RequestURI,
+		"headers": c.Request().Header,
 		"uuid":    UUID.String(),
 	}):
 		re.RenderTime = time.Since(start)
